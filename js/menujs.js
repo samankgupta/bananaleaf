@@ -8,7 +8,7 @@ document.getElementById("veg").addEventListener("click", function() {
   	document.getElementsByClassName("nonveg")[i].style.display="none";
   }
 });
-document.getElementById("nveg").addEventListener("click", function() {
+document.getElementById("nonveg").addEventListener("click", function() {
   var l1=document.getElementsByClassName("nonveg").length;
   for (var i = 0; i < l1; i++) {
   	document.getElementsByClassName("nonveg")[i].style.display="block";
@@ -37,5 +37,11 @@ window.addEventListener("scroll", function() {
   }
   else{
   	document.getElementById("backtotop").style.display="none";		
+  }
+});
+
+$('.table tbody tr').click(function(event) {
+  if (event.target.type !== 'radio') {
+    $(':radio', this).trigger('click');
   }
 });

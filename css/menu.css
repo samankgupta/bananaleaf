@@ -31,7 +31,7 @@ body{
 .card #veg:hover{
 	background: #5cb85c;
 }
-.card #nveg:hover{
+.card #nonveg:hover{
 	background: #d9534f;
 }
 .card #both:hover{
