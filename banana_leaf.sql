@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 04, 2020 at 08:32 AM
--- Server version: 10.4.11-MariaDB
--- PHP Version: 7.2.31
+-- Generation Time: Nov 05, 2020 at 12:55 PM
+-- Server version: 10.4.14-MariaDB
+-- PHP Version: 7.4.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -47,6 +47,19 @@ INSERT INTO `admin` (`admin_id`, `admin_name`, `admin_email`, `admin_pass`) VALU
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `cart`
+--
+
+CREATE TABLE `cart` (
+  `name` varchar(30) NOT NULL,
+  `email` varchar(60) NOT NULL,
+  `product` varchar(20) NOT NULL,
+  `quantity` int(2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `categories`
 --
 
@@ -74,9 +87,17 @@ CREATE TABLE `contacts` (
   `contact_id` int(10) NOT NULL,
   `contact_name` varchar(255) NOT NULL,
   `contact_email` varchar(255) NOT NULL,
-  `contact_mobile` int(100) NOT NULL,
+  `contact_mobile` varchar(10) NOT NULL,
   `contact_message` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `contacts`
+--
+
+INSERT INTO `contacts` (`contact_id`, `contact_name`, `contact_email`, `contact_mobile`, `contact_message`) VALUES
+(1, 'Yash Jain', 'yash.tushar15@gmail.com', '2147483647', 'Had a great Experience!'),
+(3, 'Samank Gupta', 'samankgupta@gmail.com', '2147483647', 'Nice Website');
 
 -- --------------------------------------------------------
 
@@ -86,7 +107,7 @@ CREATE TABLE `contacts` (
 
 CREATE TABLE `customer` (
   `name` text NOT NULL,
-  `mobile` int(15) NOT NULL,
+  `mobile` varchar(10) NOT NULL,
   `email` varchar(255) NOT NULL,
   `address` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL
@@ -97,10 +118,34 @@ CREATE TABLE `customer` (
 --
 
 INSERT INTO `customer` (`name`, `mobile`, `email`, `address`, `password`) VALUES
-('Nishant Kashyap', 2147483647, 'nishant.kashyap2019@vitstudent.ac.in', 'gurgaon', 'nishant123'),
-('yash jain', 2147483647, 'topper@gmail.com', 'tupperpur', 'ststopper123'),
-('yash ', 2147483647, 'topper@topper.com', 'topperpur', 'yash123'),
-('Nishant ', 2147483647, 'nishant.kashyap2019@gmail.com', 'gurugram', 'nishant124');
+('Nishant Kashyap', '2147483647', 'nishant.kashyap2019@vitstudent.ac.in', 'gurgaon', 'nishant123'),
+('yash jain', '2147483647', 'topper@gmail.com', 'tupperpur', 'ststopper123'),
+('yash ', '2147483647', 'topper@topper.com', 'topperpur', 'yash123'),
+('Nishant ', '2147483647', 'nishant.kashyap2019@gmail.com', 'gurugram', 'nishant124'),
+('Samank Gupta', '8586960596', 'samankgupta@gmail.com', '204, Regalia Heights, Shipra Suncity, Indirapuram', 'samank15'),
+('Vikas Gupta', '9873012430', 'vikas.manthan@gmail.com', '204, Regalia Heights, Shipra Suncity, Indirapuram', 'vikas230767');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `orders`
+--
+
+CREATE TABLE `orders` (
+  `order_id` int(10) NOT NULL,
+  `customer_name` varchar(30) NOT NULL,
+  `customer_email` varchar(60) NOT NULL,
+  `order_time` datetime NOT NULL,
+  `order_summary` varchar(400) NOT NULL,
+  `order_total` int(5) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`order_id`, `customer_name`, `customer_email`, `order_time`, `order_summary`, `order_total`) VALUES
+(1, 'Samank Gupta', 'samankgupta@gmail.com', '2020-11-05 05:24:48', '<p>Chicken Wings : 2</p><p>Butter Chicken : 1</p><p>Tandoori Butter Naan : 3</p><p>Ice Cream Sandwich : 3</p>', 1060);
 
 -- --------------------------------------------------------
 
@@ -171,12 +216,20 @@ INSERT INTO `product_categories` (`p_cat_id`, `p_cat_title`) VALUES
 CREATE TABLE `reservations` (
   `reservation_id` int(10) NOT NULL,
   `reservation_name` varchar(255) NOT NULL,
-  `reservation_mobile` int(100) NOT NULL,
+  `reservation_mobile` varchar(10) NOT NULL,
   `reservation_email` varchar(255) NOT NULL,
   `reservation_time` time NOT NULL,
   `reservation_date` date NOT NULL,
   `reservation_people` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `reservations`
+--
+
+INSERT INTO `reservations` (`reservation_id`, `reservation_name`, `reservation_mobile`, `reservation_email`, `reservation_time`, `reservation_date`, `reservation_people`) VALUES
+(3, 'Yash Jain', '948925892', 'yash.tushar15@gmail.com', '11:15:00', '2020-11-07', 6),
+(4, 'Samank Gupta', '2147483647', 'samankgupta@gmail.com', '12:12:00', '2020-11-11', 2);
 
 --
 -- Indexes for dumped tables
@@ -238,7 +291,7 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `contacts`
 --
 ALTER TABLE `contacts`
-  MODIFY `contact_id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `contact_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `products`
@@ -256,7 +309,7 @@ ALTER TABLE `product_categories`
 -- AUTO_INCREMENT for table `reservations`
 --
 ALTER TABLE `reservations`
-  MODIFY `reservation_id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `reservation_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
