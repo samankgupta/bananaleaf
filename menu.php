@@ -19,7 +19,7 @@
   </head>
   <body>
     <nav class="navbar navbar-expand-lg px-5 pt-4">
-        <a class="navbar-brand" href="index.html">BANANA LEAF</a>
+        <a class="navbar-brand" href="index.php">BANANA LEAF</a>
         <img src="leaf.png" class="leafimg d-none d-lg-block">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
           <div></div>
@@ -28,17 +28,23 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav ml-auto">
-            <a class="nav-link" href="index.html">HOME</a>
+            <a class="nav-link" href="index.php">HOME</a>
             <a class="nav-link active" href="menu.php">MENU</a>
-            <a class="nav-link" href="reservation.html">RESERVATIONS</a>
-            <a class="nav-link" href="login.html">LOGIN</a>
-            <a class="nav-link" href="contact.html">CONTACT</a>
+            <a class="nav-link" href="reservation.php">RESERVATIONS</a>
+            <?php
+            if (isset($_SESSION['name']))
+              echo '<a class="nav-link" href="logout.php">LOGOUT</a>';
+            else
+              echo '<a class="nav-link" href="login.php">LOGIN</a>';
+            ?>
+            <a class="nav-link" href="contact.php">CONTACT</a>
+            <a class="nav-link" href="cart.php"><i class="fas fa-shopping-cart"></i></a>
           </div>
         </div>
       </nav>
       <div class="container-fluid">
         <div class="row">
-          <div class="col-xl-3 col-lg-4 col-12 offset-md-1 col-md-10 offset-lg-0">
+          <div class="col-xl-3 col-lg-4 col-12 offset-md-1 col-md-10 offset-lg-0 ">
             <div class="card ml-lg-4 my-5 categorycard">
               <div class="card-header bg-warning">
                 Menu Categories
@@ -95,6 +101,7 @@
                         <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#exampleModalCenter<?php echo $p_record['product_id']; ?>">
                           Add To Cart
                         </button>
+                        <form method="post">
                         <div class="modal fade" id="exampleModalCenter<?php echo $p_record['product_id']; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                           <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
@@ -118,21 +125,23 @@
                                     <?php
                                       for ($i=1;$i<=$p_record['max_quantity'];$i++)
                                       {
-                                        echo '<tr><td><input type="radio" name="radios" id="radio'.$i.'">';
+                                        echo '<tr><td><input type="radio" name="radios" id="radio'.$i.'" value="'.$i.'">';
                                         echo '</td><td><label for="radio'.$i.'">'.$i.'</label>';
                                         echo '</td><td><label for="radio'.$i.'">Rs. '.$p_record['product_price'] * $i.'</label></td></tr>';
-                                      }
+                                      }      
+                                      echo '<input type="hidden" name="item_name" value="'.$p_record['product_title'].'"'; 
                                     ?>
                                   </tbody>
                                 </table>
                               </div>
                               </div>
                               <div class="modal-footer">
-                                <button type="button" class="btn btn-success mx-auto">Add To Cart</button>
+                                <input type="submit" class="btn btn-success mx-auto" value="Add To Cart" name="addtocart">
                               </div>
                             </div>
                           </div>
                       </div>
+                      </form>
                     </div>
                   </div>
               </div>
@@ -181,3 +190,20 @@
     <script src="js/menujs.js"></script>
   </body>
 </html>
+<?php
+if(isset($_POST['addtocart'])){
+  if(isset($_SESSION['email']))
+  {
+    $add_item = "insert into cart values('".$_SESSION['name']."','".$_SESSION['email']."','".$_POST['item_name']."','".$_POST['radios']."')";
+    $run_item = mysqli_query($con,$add_item);
+    if($run_item){
+      
+      echo "<script>alert('".$_POST['item_name']." Added to Cart!')</script>";
+    }
+  }
+  else{
+    echo "<script>alert('Login to Proceed.')</script>";
+    echo "<script>window.open('login.php','_self')</script>";
+  }
+}
+?>

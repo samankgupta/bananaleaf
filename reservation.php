@@ -1,3 +1,9 @@
+<?php 
+
+    session_start();
+    include("admin_area/includes/db.php");
+
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -9,7 +15,7 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/login.css">
     <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins&display=swap" rel="stylesheet">
-    <title>Banana Leaf | Sign Up</title>
+    <title>Banana Leaf | Reservation</title>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg px-5 pt-4">
@@ -22,23 +28,32 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav ml-auto">
-            <a class="nav-link" href="index.html">HOME</a>
+            <a class="nav-link" href="index.php">HOME</a>
             <a class="nav-link" href="menu.php">MENU</a>
-            <a class="nav-link" href="reservation.html">RESERVATIONS</a>
-            <a class="nav-link" href="login.html">LOGIN</a>
-            <a class="nav-link" href="contact.html">CONTACT</a>
+            <a class="nav-link active" href="reservation.php">RESERVATIONS</a>
+            <?php
+            if (isset($_SESSION['name']))
+              echo '<a class="nav-link" href="logout.php">LOGOUT</a>';
+            else
+              echo '<a class="nav-link" href="login.php">LOGIN</a>';
+            ?>
+            <a class="nav-link" href="contact.php">CONTACT</a>
+            <a class="nav-link" href="cart.php"><i class="fas fa-shopping-cart"></i></a>
           </div>
         </div>
       </nav>
     <div class="container">
       <div class="row">
         <div class="col-12 offset-lg-3 col-lg-6 offset-md-2 col-md-8 p-0">
-            <form class="box" style="margin-bottom: 130px;">
-          <h1>Change Password</h1>
+            <form method="post" enctype="multipart/form-data" class="box boxtwo">
+          <h1>Reservation</h1>
+          <input type="text" name="name" placeholder="Full Name" required="">
+          <input type="tel" name="mobileno" placeholder="Mobile No." required="">
           <input type="text" name="Email" placeholder="Email ID" required="">
-          <input type="text" name="mobileno" placeholder="Mobile No." required="">
-          <input type="password" name="newpassword" placeholder="New Password" required="">
-          <input type="submit" name="Submit" value="Submit" style="margin: 50px auto">
+          <input type="time" name="time" placeholder="Time" required="">
+          <input type="date" name="date" placeholder="date" required="">
+          <input type="number" name="people" placeholder="Number of people" required="">
+          <input type="submit" name="Submit" value="Submit">
     </form>
   </div>
 </div>
@@ -78,3 +93,30 @@
     <script src="js/menujs.js"></script>
   </body>
 </html>
+<?php 
+
+if(isset($_POST['Submit'])){
+    
+    $name = $_POST['name'];
+    $mobileno = $_POST['mobileno'];
+    $email = $_POST['Email'];
+    $time = $_POST['time'];
+    $date = $_POST['date'];    
+    $people = $_POST['people'];
+    
+       
+    $insert_reservation = "insert into reservations (reservation_name,reservation_mobile,reservation_email,reservation_time,reservation_date,reservation_people) values ('$name','$mobileno','$email','$time','$date','$people')";
+    
+    $run_reservation = mysqli_query($con,$insert_reservation);
+    
+    if($run_reservation){
+        
+        echo "<script>alert('You have reserved your Table')</script>";
+        echo "<script>window.open('menu.php','_self')</script>";
+        
+    }
+    
+}
+
+?>
+

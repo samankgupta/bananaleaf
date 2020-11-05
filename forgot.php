@@ -1,7 +1,7 @@
 <?php 
 
     session_start();
-    include("includes/db.php");
+    include("admin_area/includes/db.php");
 
 ?>
 <!DOCTYPE html>
@@ -9,18 +9,18 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">  
-    <link rel="stylesheet" href="../css/all.min.css">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">  
+    <link rel="stylesheet" href="css/all.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/login.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/login.css">
     <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins&display=swap" rel="stylesheet">
-    <title>Banana Leaf | Admin Login</title>
+    <title>Banana Leaf | Sign Up</title>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg px-5 pt-4">
         <a class="navbar-brand" href="index.php">BANANA LEAF</a>
-        <img src="../leaf.png" class="leafimg d-none d-lg-block">
+        <img src="leaf.png" class="leafimg d-none d-lg-block">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
           <div></div>
           <div></div>
@@ -28,45 +28,36 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav ml-auto">
-            <a class="nav-link" href="../index.php">HOME</a>
-            <a class="nav-link" href="../menu.php">MENU</a>
-            <a class="nav-link" href="../reservation.php">RESERVATIONS</a>
-            <a class="nav-link active" href="../login.php">LOGIN</a>
-            <a class="nav-link" href="../contact.php">CONTACT</a>
+            <a class="nav-link" href="index.php">HOME</a>
+            <a class="nav-link" href="menu.php">MENU</a>
+            <a class="nav-link" href="reservation.php">RESERVATIONS</a>
+            <?php
+            if (isset($_SESSION['name']))
+              echo '<a class="nav-link" href="logout.php">LOGOUT</a>';
+            else
+              echo '<a class="nav-link" href="login.php">LOGIN</a>';
+            ?>
+            <a class="nav-link" href="contact.php">CONTACT</a>
+            <a class="nav-link" href="cart.php"><i class="fas fa-shopping-cart"></i></a>
           </div>
         </div>
       </nav>
-    <div class="container p-0">
+    <div class="container">
       <div class="row">
         <div class="col-12 offset-lg-3 col-lg-6 offset-md-2 col-md-8 p-0">
-        <form action="" class="box" method="post">
-        <h1>Admin Login</h1>
-        <input type="text" placeholder="Email" name="admin_email" required>
-        <input type="password" placeholder="Password" name="admin_pass" required>
-        <input type="submit" name="admin_login" value="Login">
-        
-        <?php 
-            if(isset($_POST['admin_login'])){
-                $admin_email = mysqli_real_escape_string($con,$_POST['admin_email']);
-                $admin_pass = mysqli_real_escape_string($con,$_POST['admin_pass']);
-                $get_admin = "select * from admin where admin_email='$admin_email' AND admin_pass='$admin_pass'";
-                $run_admin = mysqli_query($con,$get_admin);
-                $count = mysqli_num_rows($run_admin);
-                if($count==1){
-                    $_SESSION['admin_email']=$admin_email;            
-                    echo "<script>window.open('index.php?dashboard','_self')</script>";    
-                }
-                else{
-                    echo "<h6 align='center' style='color:#d9534f; padding: 15px 0;'>wrong username or password<h6>";
-                }
-            }
-        ?>
-
-      </form>
-    </div>
-      </div>
-    </div>
-<footer>
+            <form method="post" enctype="multipart/form-data" class="box" style="margin-bottom: 130px;">
+          <h1>Change Password</h1>
+          <input type="text" name="Email" placeholder="Email ID" required="">
+          <input type="text" name="mobileno" placeholder="Mobile No." required="">
+          <input type="password" name="newpassword" placeholder="New Password" required="">
+          <input type="password" name="confirmpassword" placeholder="Confirm Password" required="">
+          <input type="submit" name="Submit" value="Submit" style="margin: 50px auto">
+	<a href='login.php'>Login</a>
+    </form>
+  </div>
+</div>
+</div>
+    <footer>
     <div class="container">
       <div class="row">
         <section class="col-md-4">
@@ -101,3 +92,22 @@
     <script src="js/menujs.js"></script>
   </body>
 </html>
+<?php
+if(isset($_POST['Submit'])){
+$c_email = $_POST['Email'];
+$c_new_pass = $_POST['newpassword'];
+$c_confirm_pass = $_POST['confirmpassword'];
+$sql1="SELECT * FROM customer where email='".$c_email."';";
+if($c_new_pass!=$c_confirm_pass){
+echo "<script>alert('Sorry, your new password did not match.')</script>";
+exit();
+}
+$update_c_pass = "update customer set password='$c_new_pass' where email='$c_email'";
+$run_c_pass = mysqli_query($con,$update_c_pass);
+if($run_c_pass){
+echo "<script>alert('Your Password has been updated')</script>";
+echo "<script>window.open('login.php','_self')</script>";
+}
+}
+
+?>

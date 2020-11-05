@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 06, 2020 at 06:09 AM
--- Server version: 10.4.14-MariaDB
--- PHP Version: 7.4.9
+-- Generation Time: Nov 04, 2020 at 08:32 AM
+-- Server version: 10.4.11-MariaDB
+-- PHP Version: 7.2.31
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -41,7 +41,8 @@ CREATE TABLE `admin` (
 INSERT INTO `admin` (`admin_id`, `admin_name`, `admin_email`, `admin_pass`) VALUES
 (1, 'Yash Jain', 'yash.jain@gmail.com', 'yash@123'),
 (2, 'Samank Gupta', 'samankgupta@gmail.com', 'samank@123'),
-(3, 'Tanay', 'tanaybhadula2002@gmail.com', 'tgtguruji');
+(3, 'Tanay', 'tanaybhadula2002@gmail.com', 'tgtguruji'),
+(5, 'Nishant Kashyap', 'nishkash4@gmail.com', 'nishkash4');
 
 -- --------------------------------------------------------
 
@@ -76,6 +77,30 @@ CREATE TABLE `contacts` (
   `contact_mobile` int(100) NOT NULL,
   `contact_message` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `customer`
+--
+
+CREATE TABLE `customer` (
+  `name` text NOT NULL,
+  `mobile` int(15) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `address` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `customer`
+--
+
+INSERT INTO `customer` (`name`, `mobile`, `email`, `address`, `password`) VALUES
+('Nishant Kashyap', 2147483647, 'nishant.kashyap2019@vitstudent.ac.in', 'gurgaon', 'nishant123'),
+('yash jain', 2147483647, 'topper@gmail.com', 'tupperpur', 'ststopper123'),
+('yash ', 2147483647, 'topper@topper.com', 'topperpur', 'yash123'),
+('Nishant ', 2147483647, 'nishant.kashyap2019@gmail.com', 'gurugram', 'nishant124');
 
 -- --------------------------------------------------------
 
@@ -201,7 +226,7 @@ ALTER TABLE `reservations`
 -- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `admin_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `admin_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `categories`

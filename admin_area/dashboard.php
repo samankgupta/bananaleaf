@@ -77,7 +77,7 @@
                     </div>
                     
                     <div class="col-xs-9 text-right">
-                        <div class="huge"> 11 </div>
+                        <div class="huge"> <?php echo $count_reservations ?> </div>
                            
                         <div> Reservations </div>
                         
@@ -86,7 +86,7 @@
                 </div>
             </div>
             
-            <a href="">
+            <a href="index.php?view_reservations">
                 <div class="panel-footer">
                    
                     <span class="pull-left">
@@ -117,7 +117,7 @@
                     </div>
                     
                     <div class="col-xs-9 text-right">
-                        <div class="huge"> 25 </div>
+                        <div class="huge"> <?php echo $count_orders ?> </div>
                            
                         <div> Orders </div>
                         
@@ -126,7 +126,7 @@
                 </div>
             </div>
             
-            <a href="">
+            <a href="index.php?view_orders">
                 <div class="panel-footer">
                    
                     <span class="pull-left">
@@ -157,7 +157,7 @@
                     </div>
                     
                     <div class="col-xs-9 text-right">
-                        <div class="huge"> 15 </div>
+                        <div class="huge"><?php echo $count_contacts ?></div>
                            
                         <div> Messages </div>
                         
@@ -166,7 +166,7 @@
                 </div>
             </div>
             
-            <a href="">
+            <a href="index.php?view_contacts">
                 <div class="panel-footer">
                    
                     <span class="pull-left">
@@ -213,56 +213,56 @@
                                 <th>  Time: </th>
                                 <th>  Date: </th>
                                 <th> Total People </th>
+                                <th> Delete </th>
                             
                             </tr>
                             
                         </thead>
-                        
                         <tbody>
-                           
-                            <tr>
-                                <td> 1 </td>
-                                <td> Yash </td>
-                                <td> 9609370034 </td>
-                                <td> yash.jain@gmail.com </td>
-                                <td> 02:30:00 </td>
-                                <td> 03/10/2020 </td>
-                                <td> 4 </td>
+                            
+                            <?php 
+          
+                                $i=0;
+                            
+                                $get_reservations = "select * from reservations";
                                 
+                                $run_reservations = mysqli_query($con,$get_reservations);
+          
+                                while($row_reservations=mysqli_fetch_array($run_reservations)){
+                                    
+                                    $reservations_id = $row_reservations['reservation_id'];                                    
+                                    $reservations_name = $row_reservations['reservation_name'];
+                                    $reservations_mobile = $row_reservations['reservation_mobile'];
+                                    $reservations_email = $row_reservations['reservation_email'];
+                                    $reservations_time = $row_reservations['reservation_time'];                                    
+                                    $reservations_date = $row_reservations['reservation_date'];
+                                    $reservations_people = $row_reservations['reservation_people'];
+                                    $i++;
+                            
+                            ?>
+                            
+                            <tr><!-- tr begin -->
+                                <td> <?php echo $i; ?> </td>
+                                <td> <?php echo $reservations_name; ?> </td>
+                                <td> <?php echo $reservations_mobile; ?> </td>
+                                <td> <?php echo $reservations_email; ?> </td>                                
+                                <td>  <?php echo $reservations_time; ?> </td>                             
+                                <td> <?php echo $reservations_date; ?> </td>
+                                <td> <?php echo $reservations_people; ?> </td>
+                            
+                                <td> 
+                                     
+                                     <a href="index.php?delete_reservation=<?php echo $reservations_id; ?>">
+                                     
+                                        <i class="fa fa-trash-o"></i> Delete
+                                    
+                                     </a> 
+                                     
+                                </td>
+                               
                             </tr>
-                           
-                            <tr>
-                                <td> 2 </td>
-                                <td> Nishant </td>
-                                <td> 9609370034 </td>
-                                <td> nishant.kashyap@gmail.com </td>
-                                <td> 03:30:00 </td>
-                                <td> 03/10/2020  </td>
-                                <td> 5 </td>
-                                
-                            </tr>
-                           
-                            <tr>
-                                <td> 3 </td>
-                                <td> Samank </td>
-                                <td> 9609370034 </td>
-                                <td> samank.gupta@gmail.com </td>
-                                <td> 04:40:00 </td>
-                                <td> 03/10/2020 </td>
-                                <td> 2 </td>
-                                
-                            </tr>
-                           
-                            <tr>
-                                <td> 4 </td>
-                                <td> Tanay </td>
-                                <td> 9609370034 </td>
-                                <td> tanay.bhadula@gmail.com </td>
-                                <td> 05:00:00 </td>
-                                <td> 03/10/2020  </td>
-                                <td> 3 </td>
-                                
-                            </tr>
+                            
+                            <?php } ?>
                             
                         </tbody>
                         
@@ -271,7 +271,7 @@
                 
                 <div class="text-right">
                     
-                    <a href="">
+                    <a href="index.php?view_reservations">
                         
                         View All Reservations <i class="fa fa-arrow-circle-right"></i>
                         

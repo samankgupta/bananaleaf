@@ -42,6 +42,13 @@ window.addEventListener("scroll", function() {
 
 $('.table tbody tr').click(function(event) {
   if (event.target.type !== 'radio') {
-    $(':radio', this).trigger('click');
+    if($(':radio', this).is(':checked'))
+    {
+      $(':radio', this).prop("checked", false);
+    }
+    else
+    {
+      $(':radio', this).prop("checked", true);
+    }
   }
 });

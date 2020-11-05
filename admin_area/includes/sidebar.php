@@ -91,19 +91,19 @@
             
             
             <li> 
-                <a href=""> 
+                <a href="index.php?view_reservations"> 
                     <i class="fa fa-fw fa-users"></i> View Reservations
                 </a> 
             </li> 
             
             <li> 
-                <a href=""> 
+                <a href="index.php?view_orders"> 
                     <i class="fa fa-fw fa-book"></i> View Orders
                 </a> 
             </li> 
             
             <li> 
-                <a href=""> 
+                <a href="index.php?view_contacts"> 
                     <i class="fa fa-fw fa-comments"></i> View Messages
                 </a> 
             </li> 

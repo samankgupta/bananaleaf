@@ -35,7 +35,11 @@
         
         $count_reservations = mysqli_num_rows($run_reservations);
         
+        $get_orders = "select * from orders";
         
+        $run_orders= mysqli_query($con,$get_orders);
+        
+        $count_orders = mysqli_num_rows($run_orders);
         
         $get_contacts = "select * from contacts";
         

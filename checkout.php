@@ -1,3 +1,9 @@
+<?php 
+
+    session_start();
+    include("admin_area/includes/db.php");
+
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -9,11 +15,46 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/login.css">
     <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins&display=swap" rel="stylesheet">
-    <title>Banana Leaf | Login</title>
+    <title>Banana Leaf | Checkout</title>
+    <style>
+        .checkout{
+            margin: 120px 0;
+        }
+        h1{
+            color: #95e841;
+        }
+        td:nth-child(odd){
+            font-size: 23px;
+            color: #dbff3d;
+        } 
+        td:nth-child(even){
+            font-size: 23px;
+            color: white;
+        } 
+        .pay{
+            width: 130px;
+            border:0;
+            background: none;
+            display: block;
+            margin: 35px auto;
+            text-align: center;
+            border: 2px solid #46db46;
+            padding: 14px 40px;
+            outline: none;
+            color: white;
+            border-radius: 24px;
+            transition: 0.25s;
+            cursor: pointer;
+        }
+        .pay:hover{
+            background: #46db46;
+            color: black;
+        }
+    </style>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg px-5 pt-4">
-        <a class="navbar-brand" href="index.html">BANANA LEAF</a>
+        <a class="navbar-brand" href="index.php">BANANA LEAF</a>
         <img src="leaf.png" class="leafimg d-none d-lg-block">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
           <div></div>
@@ -22,27 +63,42 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav ml-auto">
-            <a class="nav-link" href="index.html">HOME</a>
+            <a class="nav-link" href="index.php">HOME</a>
             <a class="nav-link" href="menu.php">MENU</a>
-            <a class="nav-link" href="reservation.html">RESERVATIONS</a>
-            <a class="nav-link active" href="login.html">LOGIN</a>
-            <a class="nav-link" href="contact.html">CONTACT</a>
+            <a class="nav-link" href="reservation.php">RESERVATIONS</a>
+            <?php
+            if (isset($_SESSION['name']))
+              echo '<a class="nav-link" href="logout.php">LOGOUT</a>';
+            else
+              echo '<a class="nav-link" href="login.php">LOGIN</a>';
+            ?>
+            <a class="nav-link" href="contact.php">CONTACT</a>
+            <a class="nav-link" href="cart.php"><i class="fas fa-shopping-cart"></i></a>
           </div>
         </div>
       </nav>
     <div class="container p-0">
-      <div class="row">
+      <div class="row text-center checkout">
         <div class="col-12 offset-lg-3 col-lg-6 offset-md-2 col-md-8 p-0">
-        <form class="box">
-        <h1>Login</h1>
-        <input type="text" name="email" placeholder="Email" required="">
-        <input type="password" name="password" placeholder="Password" required="">
-        <input type="submit" name="login" value="Login">
-        <a href="signup.html">New User? Sign Up.</a>
-        <br class="d-block d-sm-none">
-        <a href="forgot.html">Forgot Password?</a>  
-      </form>
-    </div>
+            <h1>CHECKOUT</h1><br><br>
+            <table>
+                <tr>
+                    <td>NAME : </td>
+                    <td><?php echo $_SESSION['name'] ?></td>
+                </tr>
+                <tr>
+                    <td>EMAIL : </td>
+                    <td><?php echo $_SESSION['email'] ?></td>
+                </tr>
+                <tr>
+                    <td>ORDER TOTAL : </td>
+                    <td><?php echo $_SESSION['totalprice'] ?> Rs.</td>
+                </tr>
+            </table><br>
+            <form method="post">
+              <input type="submit" class="pay" name="pay" value="PAY">
+            </form>
+        </div>
       </div>
     </div>
 <footer>
@@ -77,6 +133,22 @@
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-    <script src="js/menujs.js"></script>
   </body>
 </html>
+<?php
+  if(isset($_POST['pay']))
+  {
+    date_default_timezone_set("Asia/Kolkata");
+    $_SESSION['time']=date("Y/m/d")." ".date("h:i:sa");
+    $select_order_rows = "select * from orders";
+    $run_customer = mysqli_query($con,$select_order_rows);
+    $check_order_rows = mysqli_num_rows($run_order_rows);
+    $check_order_rows+=1;
+    $add_order = "insert into orders values('".$check_order_rows."','".$_SESSION['name']."','".$_SESSION['email']."','".$_SESSION['time']."','".$_SESSION['ordersummary']."','".$_SESSION['totalprice']."')";
+    $run_order = mysqli_query($con,$add_order);
+    $delete_cart="delete from cart where name='".$_SESSION['name']."'";
+    $delete_cart_result=mysqli_query($con, $delete_cart);
+    echo "<script>alert('Payment Successful !')</script>";
+    echo "<script>window.open('index.php','_self')</script>";
+  }
+?>

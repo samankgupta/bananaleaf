@@ -1,3 +1,9 @@
+<?php 
+
+    session_start();
+    include("admin_area/includes/db.php");
+
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -9,11 +15,11 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/login.css">
     <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins&display=swap" rel="stylesheet">
-    <title>Banana Leaf | Contact</title>
+    <title>Banana Leaf | Sign Up</title>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg px-5 pt-4">
-        <a class="navbar-brand" href="index.html">BANANA LEAF</a>
+        <a class="navbar-brand" href="index.php">BANANA LEAF</a>
         <img src="leaf.png" class="leafimg d-none d-lg-block">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
           <div></div>
@@ -22,29 +28,31 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav ml-auto">
-            <a class="nav-link" href="index.html">HOME</a>
+            <a class="nav-link" href="index.php">HOME</a>
             <a class="nav-link" href="menu.php">MENU</a>
-            <a class="nav-link" href="reservation.html">RESERVATIONS</a>
-            <a class="nav-link" href="login.html">LOGIN</a>
-            <a class="nav-link active" href="contact.html">CONTACT</a>
+            <a class="nav-link" href="reservation.php">RESERVATIONS</a>
+            <a class="nav-link" href="login.php">LOGIN</a>
+            <a class="nav-link" href="contact.php">CONTACT</a>
+            <a class="nav-link" href="cart.php"><i class="fas fa-shopping-cart"></i></a>
           </div>
         </div>
       </nav>
     <div class="container">
       <div class="row">
         <div class="col-12 offset-lg-3 col-lg-6 offset-md-2 col-md-8 p-0">
-      <form class="box boxtwo">
-    <h1>Contact</h1>
-    <input type="text" name="name" placeholder="Name" required="">
-    <input type="text" name="Email" placeholder="Email ID" required="">
-    <input type="text" name="mobileno" placeholder="Mobile No." required="">
-    <input type="text" name="Message" placeholder="Message" required="">
-      <input type="submit" name="Send" value="Send">
+            <form method="post" enctype="multipart/form-data" class="box boxtwo">
+          <h1>Register Here</h1>
+          <input type="text" name="name" placeholder="Full Name" required="">
+          <input type="text" name="mobileno" placeholder="Mobile No." required="">
+          <input type="text" name="Email" placeholder="Email ID" required="">
+          <input type="text" name="address" placeholder="Your Address" required="">
+          <input type="password" name="password" placeholder="Password" required="">
+          <input type="submit" name="Submit" value="Submit">
     </form>
-      </div>
-    </div>
-</div> 
-<footer>
+  </div>
+</div>
+</div>
+    <footer>
     <div class="container">
       <div class="row">
         <section class="col-md-4">
@@ -79,3 +87,20 @@
     <script src="js/menujs.js"></script>
   </body>
 </html>
+<?php
+if(isset($_POST['Submit'])){
+$c_name = $_POST['name'];
+$c_email = $_POST['Email'];
+$c_pass = $_POST['password'];
+$c_contact = $_POST['mobileno'];
+$c_address = $_POST['address'];
+$insert_customer = "insert into customer (name,email,password,mobile,address) values ('$c_name','$c_email','$c_pass','$c_contact','$c_address')";
+$run_customer = mysqli_query($con,$insert_customer);
+if($run_customer){
+        
+        echo "<script>alert('Registration Successful')</script>";
+        echo "<script>window.open('menu.php','_self')</script>";
+        
+    }
+}
+?>
