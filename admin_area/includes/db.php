@@ -1,5 +1,5 @@
 <?php   
 
-$con = mysqli_connect("localhost:3306","root","","banana_leaf");
+$con = mysqli_connect("databases.000webhost.com","id15627093_bananaleafusername","7m4jnj<%I[VU1>f>","id15627093_bananaleaf");
 
 ?> 
